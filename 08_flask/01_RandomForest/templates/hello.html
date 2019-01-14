@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Web Prediction</title>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"> <!-- staticフォルダのstyle.css -->
+</head>
+<body>
+
+  <!-- 1.登録 -->
+  <div class="page">
+    <h1>Entry</h1>
+
+    <!-- フォーム -->
+    <p>
+    <form action="{{ url_for('add_user') }}" method="post" class="add-user"> <!-- add_usrに送る -->
+      <label for="username">入力：</label>
+      <input type="text" size="10" id="age" name="age">
+      <input type="text" size="10" id="sex" name="sex">
+      <input type="text" size="10" id="label" name="label">
+      <input type="submit" value="登録">
+    </form>
+    </p>
+
+    <!-- 表示部（DB内容） -->
+    <ul class="users">
+    {% for user in user_list %}
+      <li> {{ user.age }} , {{ user.sex }} ： {{ user.label }} </li> <!-- userインスタンスの属性を表示 -->
+    {% endfor %}
+    </ul>
+    <form action="{{ url_for('clear') }}" method="post" class="add-user"> <!-- add_usrに送る -->
+      <input type="submit" value="クリア">
+    </form>
+
+  </div>
+
+  <!-- 2.予測 -->
+  <div class="page">
+    <h1>Prediction</h1>
+     <!-- フォーム -->
+        <p>
+        <form action="{{ url_for('predict') }}" method="post" class="add-user"> <!-- add_usrに送る -->
+          <label for="username">入力：</label>
+          <input type="Integer" size="10" id="age" name="age">
+          <input type="Integer" size="10" id="sex" name="sex">
+          <input type="submit" value="予測">
+        </form>
+        </p>
+
+        <!-- 表示部（DB内容） -->
+        <ul class="users">
+          <li>{{ a }}</li>
+        </ul>
+
+  </div>
+
+</body>
+</html>
