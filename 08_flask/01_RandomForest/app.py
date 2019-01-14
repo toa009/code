@@ -1,9 +1,6 @@
 # request, redirect, url_for を追加
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-import pandas.io.sql as psql
-import sqlite3
-from contextlib import closing
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db0.db'
@@ -88,6 +85,11 @@ def predict():
     sex = request.form.get('sex')
 
     #---------------------------
+    # -*- coding: utf-8 -*-
+    import pandas.io.sql as psql
+    import sqlite3
+    from contextlib import closing
+    
     dbname = 'db0.db'
 
     with closing(sqlite3.connect(dbname)) as conn:
@@ -99,23 +101,19 @@ def predict():
         ax = df.loc[:,['age','sex']]
         ay = df.loc[:,['label']]
         #ex = [[0,0,],[0,1],[1,0],[1,1],[3,3],[4,4],[5,5]]
-        ex = [[float(age),float(sex)]]
+        ex = [[age,sex]]
 
-        #from sklearn.ensemble import RandomForestClassifier
-        #m = RandomForestClassifier()
-        from sklearn.linear_model import LinearRegression
-        m = LinearRegression()
+        from sklearn.ensemble import RandomForestClassifier
+        m = RandomForestClassifier()
+        #from sklearn.svm import LinearSVC
+        #m = LinearSVC()
 
         m.fit(ax, ay)
 
         # 予測
         py = m.predict(ex)
-        #py = m.predict([[1,1]])
-
     #----------------------
-    #a = "test"
-    #a = str(py)[1] # 数値を文字列化　＋　文字列が[1]の形なので2文字目をスライスして数字だけ取得
-    a = round(py[0][0],2)
+    a = str(py)[1] # 数値を文字列化　＋　文字列が[1]の形なので2文字目をスライスして数字だけ取得
 
     return redirect(url_for('hello'))
 
